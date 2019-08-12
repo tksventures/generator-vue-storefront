@@ -1,0 +1,63 @@
+version: '3.0'
+services:
+  es1:
+    container_name: elasticsearch
+    build: ./vue-storefront-api/docker/elasticsearch/
+    volumes:
+      - ./vue-storefront-api/docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - ./vue-storefront-api/docker/elasticsearch/data:/usr/share/elasticsearch/data
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    environment:
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+
+  kibana:
+    build: ./vue-storefront-api/docker/kibana/
+    volumes:
+      - ./vue-storefront-api/docker/kibana/config/:/usr/share/kibana/config:ro
+    ports:
+      - '5601:5601'
+    depends_on:
+      - es1
+
+  redis:
+    image: 'redis:4-alpine'
+    ports:
+      - '6379:6379'
+
+  vue-api:
+    build:
+      context: ./vue-storefront-api
+      dockerfile: docker/vue-storefront-api/Dockerfile
+    depends_on:
+      - es1
+      - redis
+    env_file: ./vue-storefront-api/.env
+    environment:
+      VS_ENV: dev
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://es1:9200"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    tmpfs:
+      - /var/www/dist
+    ports:
+      - '8080:8080'
+
+  app:
+    build:
+      context: ./vue-storefront
+      dockerfile: docker/vue-storefront/Dockerfile
+    env_file: ./vue-storefront/.env
+    environment:
+      VS_ENV: dev
+    network_mode: host
+    tmpfs:
+      - /var/www/dist
+    ports:
+      - '3000:3000'
+
+volumes:
+  esdat1:

@@ -1,0 +1,25 @@
+sudo: required
+language: node_js
+node_js:
+  - node
+services:
+  - docker
+branches:
+  only:
+  - master
+install:
+  - if [$TRAVIS_PULL_REQUEST != false];
+    then docker build -t <%= dockerRepo %>/vue-storefront:$TRAVIS_PULL_REQUEST_BRANCH -f docker/vue-storefront/Dockerfile .;
+    else docker build -t <%= dockerRepo %>/vue-storefront:latest -f docker/vue-storefront/Dockerfile .;
+    fi
+script:
+  - if [$TRAVIS_PULL_REQUEST != false];
+    then docker run --name vue-storefront <%= dockerRepo %>/vue-storefront:$TRAVIS_PULL_REQUEST_BRANCH yarn run full-test;
+    else docker run --name vue-storefront <%= dockerRepo %>/vue-storefront:latest yarn run full-test;
+    fi
+after_success:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - if [$TRAVIS_PULL_REQUEST != false ];
+    then docker push <%= dockerRepo %>/vue-storefront:$TRAVIS_PULL_REQUEST_BRANCH;
+    else docker push <%= dockerRepo %>/vue-storefront:latest;
+    fi
