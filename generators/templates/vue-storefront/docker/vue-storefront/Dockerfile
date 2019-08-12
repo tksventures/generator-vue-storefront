@@ -15,4 +15,6 @@ COPY . .
 
 COPY docker/vue-storefront/vue-storefront.sh /usr/local/bin/
 
+RUN yarn install
+
 CMD ["vue-storefront.sh"]

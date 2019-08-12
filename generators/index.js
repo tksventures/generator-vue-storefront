@@ -32,8 +32,8 @@ module.exports = class extends Generator {
     const { options } = this;
     const {
       name,
-      dockerRepo,
     } = options;
+    const dockerRepo = options['docker-repo'];
 
     if (!name) {
       prompts.push({
@@ -61,7 +61,7 @@ module.exports = class extends Generator {
     }
 
     if (!this.answers.dockerRepo) {
-      this.answers.dockerRepo = options.dockerRepo;
+      this.answers.dockerRepo = options['docker-repo'];
     }
 
     this.project = this.answers.name.toLowerCase().replace(' ', '-');
@@ -157,6 +157,17 @@ module.exports = class extends Generator {
         this.terminal,
         'cyan',
       );
+
+      if (this.options['reset-linting']) {
+        await copyFromTemplate(
+          this.fs,
+          this.templatePath('vue-storefront/.eslintrc-copy.js'),
+          this.destinationPath(`${this.project}/vue-storefront/.eslintrc.js`),
+          frontendParams,
+          this.terminal,
+          'blue',
+        );
+      }
     }
   }
 

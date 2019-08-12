@@ -1,6 +1,5 @@
 {
     "elasticsearch": {
-      "index": "vue_storefront_pimcore",
       "min_score": 0.02,
       "csrTimeout": 5000,
       "ssrTimeout": 1000
@@ -15,9 +14,6 @@
         "storeId": 3,
         "name": "German Store",
         "url": "/de",
-        "elasticsearch": {
-          "index": "vue_storefront_pimcore_de"
-        },
         "tax": {
           "sourcePriceIncludesTax": false,
           "defaultCountry": "DE",
@@ -41,9 +37,6 @@
         "storeId": 4,
         "name": "Italian Store",
         "url": "/it",
-        "elasticsearch": {
-          "index": "vue_storefront_pimcore_it"
-        },
         "tax": {
           "sourcePriceIncludesTax": false,
           "defaultCountry": "IT",
