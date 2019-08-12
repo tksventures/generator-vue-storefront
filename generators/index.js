@@ -32,6 +32,7 @@ module.exports = class extends Generator {
     const { options } = this;
     const {
       name,
+      divante,
     } = options;
     const dockerRepo = options['docker-repo'];
 
@@ -44,7 +45,7 @@ module.exports = class extends Generator {
       });
     }
 
-    if (!dockerRepo) {
+    if (!dockerRepo && !divante) {
       prompts.push({
         type: 'input',
         name: 'dockerRepo',
@@ -93,7 +94,7 @@ module.exports = class extends Generator {
   async writeBackend() {
     const templates = this.sourceRoot();
 
-    if (this.backendGenerated) {
+    if (this.backendGenerated && !this.options.divante) {
       this.apiServer = 'http://localhost:8080';
 
       const backendParams = {
@@ -129,7 +130,7 @@ module.exports = class extends Generator {
   async writeFrontend() {
     const templates = this.sourceRoot();
 
-    if (this.frontendGenerated) {
+    if (this.frontendGenerated && !this.options.divante) {
       const frontendParams = {
         apiServer: this.apiServer,
         name: this.answers.name,
@@ -172,7 +173,7 @@ module.exports = class extends Generator {
   }
 
   async writeSharedFiles() {
-    if (this.backendGenerated && this.frontendGenerated) {
+    if (this.backendGenerated && this.frontendGenerated && !this.options.divante) {
       await copyFromTemplate(
         this.fs,
         this.templatePath('docker-compose.yml'),
