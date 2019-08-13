@@ -71,10 +71,11 @@ module.exports = class extends Generator {
   async download() {
     const {
       tag,
-      apiTag,
       frontend,
       backend,
     } = this.options;
+
+    const apiTag = this.options['api-tag'];
 
     if (!frontend) {
       this.backendError = !(await downloadRepo(this.backendRepo, apiTag, `${this.project}/vue-storefront-api`, this.terminal, 'yellow'));
