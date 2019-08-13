@@ -1,0 +1,4 @@
+.env
+.travis.yml
+__tests__
+.eslintrc.js
