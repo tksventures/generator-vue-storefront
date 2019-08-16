@@ -34,7 +34,8 @@ module.exports = class extends Generator {
       name,
       divante,
     } = options;
-    const dockerRepo = options['docker-repo'];
+    const dockerAccount = options['docker-account'];
+    const keepLinting = options['keep-linting'];
 
     if (!name) {
       prompts.push({
@@ -45,13 +46,24 @@ module.exports = class extends Generator {
       });
     }
 
-    if (!dockerRepo && !divante) {
+    if (!keepLinting && !divante) {
       prompts.push({
-        type: 'input',
-        name: 'dockerRepo',
-        message: 'What is your dockerhub username?',
+        type: 'confirm',
+        name: 'keepLinting',
+        message: "Do you wish to keep Divante?'s linting configuration?",
+        default: false,
       });
     }
+
+    if (!dockerAccount && !divante) {
+      prompts.push({
+        type: 'input',
+        name: 'dockerAccount',
+        message: 'Add CI Pipeline? Please provide your dockerhub username if so',
+        default: 'your-docker-username',
+      });
+    }
+
 
     if (prompts.length > 0) {
       this.answers = await this.prompt(prompts);
@@ -61,8 +73,12 @@ module.exports = class extends Generator {
       this.answers.name = options.name;
     }
 
-    if (!this.answers.dockerRepo) {
-      this.answers.dockerRepo = options['docker-repo'];
+    if (!this.answers.dockerAccount) {
+      this.answers.dockerAccount = dockerAccount;
+    }
+
+    if (!this.answers.keepLinting) {
+      this.answers.keepLinting = keepLinting;
     }
 
     this.project = this.answers.name.toLowerCase().replace(' ', '-');
@@ -101,7 +117,7 @@ module.exports = class extends Generator {
       const backendParams = {
         apiServer: this.apiServer,
         name: this.answers.name,
-        dockerRepo: this.answers.dockerRepo,
+        dockerAccount: this.answers.dockerAccount,
       };
       const backendFiles = await getFiles(`${templates}/vue-storefront-api`);
       const backendDestination = this.destinationPath(`${this.project}/vue-storefront-api`);
@@ -135,7 +151,7 @@ module.exports = class extends Generator {
       const frontendParams = {
         apiServer: this.apiServer,
         name: this.answers.name,
-        dockerRepo: this.answers.dockerRepo,
+        dockerAccount: this.answers.dockerAccount,
       };
 
       const frontendFiles = await getFiles(`${templates}/vue-storefront`);
@@ -160,7 +176,7 @@ module.exports = class extends Generator {
         'cyan',
       );
 
-      if (this.options['reset-linting']) {
+      if (!this.answers.keepLinting) {
         await copyFromTemplate(
           this.fs,
           this.templatePath('vue-storefront/.eslintrc-copy.js'),

@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: vue-storefront
-        image: <%= dockerRepo %>/vue-storefront:latest
+        image: <%= dockerAccount %>/vue-storefront:latest
         envFrom:
         - configMapRef:
             name: vue-storefront-default-config

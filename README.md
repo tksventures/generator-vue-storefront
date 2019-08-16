@@ -41,8 +41,10 @@ Options can be written alongside the generator call to provide answers to the ge
 - `--tag`: Indicates which tagged version of the vue-storefront you would like to download.
 - `--frontend`: Indicates that you only wish for the vue-storefront to be downloaded without the api.
 -  `--backend`: Indicates that you only wish for the vue-storefront-api code to be generated.
-- `--docker-repo`: Used for modified `.travis.yml` files. Indicates the dockerhub username to which vue-storefront images can be pushed to.
-- `--divate`: Indicates that you want to generate the exact vue-storefront and vue-storefront-api code
+- `--docker-account`: Used for modified `.travis.yml` files. Indicates the dockerhub username to which vue-storefront images can be pushed to.
+- `--divate`: Indicates that you want to generate the exact vue-storefront and vue-storefront-api code.
+- `--keep-linting`: Indicates that you want your vue-storefront project to retain the same linting rules giving by Divante.
+
 
 ### Example
 
