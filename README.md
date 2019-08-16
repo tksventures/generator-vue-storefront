@@ -29,7 +29,7 @@ Among the files generated, there are `docker-compose.yml` files that are meant t
 If both the vue-storefront and vue-storefront api are generated, one will be placed at the root directory and can be used to build and connect both apps through the following commands:
 
 - `docker-compose build` to build the images. Volumes have already been assigned in the file to facilitate development in both apps.
-- `docker-compose up` to activate both apps. It is recommended to first initialize the api (`docker-compose up vue-api`) so the dependencies can be properly built before connecting to he frontend store.
+- `docker-compose up` to activate both apps. It is recommended to first initialize elasticsearch (`docker-compose up es1`) so the service is ready to receive data from the vue-storefront-api.
 
 The vue-storefront-api will, by default, generate the same mock data present in the [vue-storefront Demo Site](https://demo.vuestorefront.io/).
 
