@@ -37,10 +37,11 @@ services:
     environment:
       VS_ENV: dev
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://es1:9200"]
+      test: ["CMD", "curl", "-f", "http://es1:9200 || exit  1"]
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: on-failure
     volumes:
       - './vue-storefront-api/config:/var/www/config'
       - './vue-storefront-api/ecosystem.json:/var/www/ecosystem.json'
@@ -50,6 +51,7 @@ services:
       - './vue-storefront-api/scripts:/var/www/scripts'
       - './vue-storefront-api/src:/var/www/src'
       - './vue-storefront-api/var:/var/www/var'
+      - './vue-storefront-api/docker/vue-storefront-api/vue-storefront-api.sh:/usr/local/bin/vue-storefront-api.sh'
     tmpfs:
       - /var/www/dist
     ports:
