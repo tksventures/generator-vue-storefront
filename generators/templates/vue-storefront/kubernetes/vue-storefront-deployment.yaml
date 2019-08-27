@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vue-storefront
+spec:
+  selector:
+    matchLabels:
+      app: vue-storefront
+  template:
+    metadata:
+      labels:
+        app: vue-storefront
+    spec:
+      containers:
+      - name: vue-storefront
+        image: <%= dockerAccount %>/vue-storefront:latest
+        envFrom:
+        - configMapRef:
+            name: vue-storefront-default-config
+        ports:
+        - containerPort: 3000
