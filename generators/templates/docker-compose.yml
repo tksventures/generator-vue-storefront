@@ -64,6 +64,7 @@ services:
     env_file: ./vue-storefront/.env
     environment:
       VS_ENV: dev
+    network_mode: host
     volumes:
       - './vue-storefront/babel.config.js:/var/www/babel.config.js'
       - './vue-storefront/config:/var/www/config'
