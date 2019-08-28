@@ -26,7 +26,7 @@ Solution for you:
     network_mode: host
     ```
 
-2. in `./vue-storefront/.env` change `VUE_STORE_API_HOST` from `http://localhost:8080` to `http://vue-app:8080`
+2. in `./vue-storefront/.env` change `VUE_STORE_API_HOST` from `http://localhost:8080` to `http://vue-api:8080`
 
 3. in you `/etc/hosts` file add the line:
 
